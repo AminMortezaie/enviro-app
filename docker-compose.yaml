@@ -1,19 +1,10 @@
 services:
-  simulator:
-    build: ./hub_image/
-    container_name: hub_simulator
-    volumes:
-      - ./app:/src
-    command: sh -c './run_mqtt_publisher.sh'
-    networks:
-      - hub-network
-
 
   server:
     container_name: django_server
     build: .
-      #    command: bash -c "gunicorn -c gunicorn.conf.py personal_wallet.wsgi"
-    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate&& python3 manage.py runserver 0.0.0.0:8088"
+      #    command: bash -c "gunicorn -c gunicorn.conf.py enviroapp.wsgi"
+    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8088 --noreload"
     volumes:
       - /var/run/gunicorn:/var/run/gunicorn:rw
       - .:/code
@@ -33,9 +24,22 @@ services:
     image: eclipse-mosquitto
     ports:
       - "1883:1883"
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
     networks:
       - hub-network
     restart: always
 
+
+  simulator:
+    build: ./hub_image/
+    container_name: hub_simulator
+    volumes:
+      - ./app:/src
+    command: python /src/hub_simulator.py "test_hub" 10
+    networks:
+      - hub-network
+
 networks:
   hub-network:
+    driver: bridge
