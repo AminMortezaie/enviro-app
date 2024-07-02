@@ -16,10 +16,9 @@ topic = f"sensor/data/{args.hub_id}"
 
 # Create an MQTT client instance
 client = mqtt.Client()
-print("client:::", client)
 
 
-# Function to connect to the broker
+# Function to connect to the broker with retry
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -28,8 +27,17 @@ def connect_mqtt():
             print(f"Failed to connect, return code {rc}\n")
 
     client.on_connect = on_connect
-    client.connect(broker, port)
-    return client
+
+    for attempt in range(10):  # Increase number of attempts
+        try:
+            client.connect(broker, port)
+            client.loop_start()
+            return client
+        except ConnectionRefusedError:
+            print(f"Connection attempt {attempt + 1} failed, retrying in 5 seconds...")
+            time.sleep(5)
+
+    raise ConnectionRefusedError("Failed to connect to MQTT Broker after multiple attempts.")
 
 
 # Function to publish messages to the broker
@@ -64,11 +72,9 @@ client.on_disconnect = on_disconnect
 # Connect to the broker and start publishing
 try:
     client = connect_mqtt()
-except Exception as e:
-    print("client connection err:::", e)
-
-try:
     publish(client)
+except ConnectionRefusedError as e:
+    print(e)
 except KeyboardInterrupt:
     print("Interrupted by user")
 finally:
