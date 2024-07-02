@@ -3,8 +3,8 @@ from sensor_data.models import SensorData
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        print("Connected to MQTT Broker!\n")
-        client.subscribe("sensor/data/#")
+        print("Connected to MQTT Broker from Client....")
+        client.subscribe("sensor/data/test_hub")
     else:
         print(f"Failed to connect, return code {rc}")
 
@@ -21,7 +21,7 @@ def on_message(client, userdata, msg):
             temperature=temperature,
             humidity=humidity
         )
-        print(f"Saved data from {hub_id}")
+        print(f"Saved temp: {temperature} and humidity:{humidity} from {hub_id}")
     except Exception as e:
         print(f"Failed to process message: {e}")
 
