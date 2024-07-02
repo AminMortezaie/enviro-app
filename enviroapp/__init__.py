@@ -1,0 +1,1 @@
+default_app_config = 'sensor_data.apps.SensorDataConfig'
