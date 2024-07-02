@@ -1,10 +1,11 @@
 import paho.mqtt.client as mqtt
 from sensor_data.models import SensorData
+import os
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
         print("Connected to MQTT Broker from Client....")
-        client.subscribe("sensor/data/test_hub")
+        subscribe()
     else:
         print(f"Failed to connect, return code {rc}")
 
@@ -32,3 +33,8 @@ client.on_message = on_message
 def start_mqtt():
     client.connect("mqtt-broker", 1883, 60)
     client.loop_start()
+
+
+def subscribe():
+    hub_id = os.getenv('hub_id')
+    client.subscribe(f"sensor/data/{hub_id}")

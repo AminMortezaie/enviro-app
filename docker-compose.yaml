@@ -4,14 +4,12 @@ services:
     container_name: django_server
     build: .
       #    command: bash -c "gunicorn -c gunicorn.conf.py enviroapp.wsgi"
-    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8088 --noreload"
+    command: bash -c "python3 manage.py runserver 0.0.0.0:8088 --noreload"
     volumes:
       - /var/run/gunicorn:/var/run/gunicorn:rw
       - .:/code
     ports:
       - "8088:8088"
-    #    depends_on:
-    #      - db
     restart: always
     env_file:
       - .env
@@ -36,9 +34,23 @@ services:
     container_name: hub_simulator
     volumes:
       - ./app:/src
-    command: python /src/hub_simulator.py "test_hub" 10
+#    env_file:
+#      - .env
+    command: python /src/hub_simulator.py "amin_hub" 10
     networks:
       - hub-network
+
+  dashboard:
+    build: ./sensor-dashboard/sensor
+    ports:
+      - '3000:5173'  # Map the host port 3000 to the container port 5173
+    environment:
+        - VITE_HOST=0.0.0.0
+    networks:
+      - hub-network
+    depends_on:
+      - mqtt-broker
+      - server
 
 networks:
   hub-network:
