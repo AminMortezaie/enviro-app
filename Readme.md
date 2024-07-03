@@ -47,6 +47,7 @@ The system architecture can be visualized as follows:
 ### Prerequisites
 
 - Docker and Docker Compose installed on your machine.
+- Set hub_id which is the name of hub to application work.
 
 ### Step-by-Step Instructions
 
@@ -89,6 +90,9 @@ simulator:
 ```
 
    Set your desire hub name instead of **"amin_hub"** and sleep duration which set to **"10"** seconds.
+
+   ### **Attention**
+   You need to set hub_id in **.env** file to run the application and its name must be same with your hub name passed to simulator container.
 
 By following these steps, you can set up and run the system efficiently. The `docker-compose up --build` command will start all the necessary services, including the MQTT broker, simulator, Django server, and React dashboard. The `docker-compose exec` commands will ensure that the Django server is properly set up with the latest database migrations.
 
