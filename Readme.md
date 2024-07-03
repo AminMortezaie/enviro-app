@@ -53,7 +53,7 @@ The system architecture can be visualized as follows:
 #### 1. Clone the Repository
 
 ```sh
-git clone https://github.com/AminMortezaie/enviro-app
+git clone https://github.com/AminMortezaie/enviro-app/
 cd enviroapp
 ```
 
