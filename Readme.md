@@ -10,7 +10,7 @@ The system architecture comprises four main components: Simulator, Server, Datab
 
 - **Purpose**: Simulates sensors generating random temperature and humidity data and sends this data to the MQTT broker every 10 seconds.
 - **Components**:
-  - A Python script (`hub_simulator.py`) using `paho-mqtt` to publish data to the MQTT broker.
+  - A Python script (`app/hub_simulator.py`) using `paho-mqtt` to publish data to the MQTT broker.
 
 #### Server
 
@@ -47,14 +47,13 @@ The system architecture can be visualized as follows:
 ### Prerequisites
 
 - Docker and Docker Compose installed on your machine.
-- Node.js and npm installed for React development.
 
 ### Step-by-Step Instructions
 
 #### 1. Clone the Repository
 
 ```sh
-git clone <repository-url>
+git clone https://github.com/AminMortezaie/enviro-app
 cd enviroapp
 ```
 
